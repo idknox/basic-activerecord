@@ -80,4 +80,6 @@ require "pp"
 #   puts user.id.to_s + ", " + user.amount.to_s + ", " + user.name
 # end
 
-puts Customer.joins(:orders).select('customers.id as cust_id', :name).group(:name).group(:cust_id).order(:name => :asc).sum(:amount).to_sql
+Customer.joins(:orders).select('customers.id as customers.cust_id', :name).group(:name, 'customers.id').order(:name => :asc).sum(:amount).each do |k,v|
+puts k[1].to_s + ": " + k[0] + ": " + v.to_s
+  end
