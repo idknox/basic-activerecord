@@ -80,6 +80,20 @@ require "pp"
 #   puts user.id.to_s + ", " + user.amount.to_s + ", " + user.name
 # end
 
-Customer.joins(:orders).select('customers.id as customers.cust_id', :name).group(:name, 'customers.id').order(:name => :asc).sum(:amount).each do |k,v|
-puts k[1].to_s + ": " + k[0] + ": " + v.to_s
-  end
+# Customer.joins(:orders).select('customers.id as customers.cust_id', :name).group(:name, 'customers.id').order(:name => :asc).sum(:amount).each do |k,v|
+# puts k[1].to_s + ": " + k[0] + ": " + v.to_s
+#   end
+
+# Customer.joins(:orders).select("customers.id", :name, "round(avg(amount), 2) as amount").group(:name, "customers.id").order(:name).each do |customer|
+#   p customer.id.to_s + customer.name + customer.amount.to_s
+# end
+
+# Item.joins(:orderitems, "INNER JOIN orders ON orderitems.order_id=orders.id").select(:name).where('orders.customer_id = 2').each do |item|
+#   puts item.name
+# end
+
+# puts Customer.joins(orders: :orderitems).joins('INNER JOIN items ON items.id=orderitems.item_id').select('customers.id').where('items.id = 8')
+
+# puts Customer.joins(orders: :orderitems).joins('INNER JOIN items ON items.id=orderitems.item_id').select('customers.name').where("items.name='bike03'")
+
+puts Customer.joins(orders: :orderitems).joins('INNER JOIN items ON items.id=orderitems.item_id').select('sum(orders.amount)').where("customers.name='Evert Pfeffer' and items.name='bike03'").sum(:amount)
